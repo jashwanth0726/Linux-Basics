@@ -22,6 +22,11 @@ A personal reference guide documenting core Linux concepts, commands, and tricks
 
 ## Man Pages
 
+> **What are Man Pages?**
+> Man pages (short for *manual pages*) are the built-in documentation system in Linux. Every command comes with a man page that explains what it does, what options it accepts, and how to use it — all right from your terminal, no internet needed. Think of it as the official instruction manual bundled with every tool on your system.
+>
+> **How to use:** Run `man <command>` to open the manual for any command. For example, `man ls` opens the manual for the `ls` command. Use the arrow keys to scroll, and press `q` to quit.
+
 - Use `/` inside a man page to search for any string.
 - Press `n` to jump to the **next** match, `N` for the **previous** match.
 - Use `?` to search **backwards**.
@@ -29,6 +34,11 @@ A personal reference guide documenting core Linux concepts, commands, and tricks
 ---
 
 ## Globbing
+
+> **What is Globbing?**
+> Globbing is the shell's way of matching multiple file names using special wildcard characters. Instead of typing out every file name one by one, you write a pattern and the shell expands it into all the matching file names before running your command. It happens automatically — you never have to do anything special to trigger it.
+>
+> For example, `ls *.txt` doesn't literally look for a file called `*.txt`. The shell sees `*`, expands it to every file in the directory, and then `ls` only receives the actual matched names.
 
 Globbing is how the shell expands patterns to match file paths before running a command.
 
@@ -56,6 +66,11 @@ ls file_[!ab]       # excludes file_a and file_b
 ---
 
 ## Piping & Redirection
+
+> **What is Piping & Redirection?**
+> Every Linux command has three standard channels: input (where it reads from), output (where it writes results), and error (where it writes error messages). By default, input comes from your keyboard and output/errors go to your screen. Piping and redirection let you change this — you can save output to a file, feed a file as input to a command, or chain commands together so the output of one becomes the input of the next.
+>
+> The pipe symbol `|` connects two commands directly. Redirection symbols like `>` and `<` connect commands to files. This is one of the most powerful ideas in Linux — small, simple commands become incredibly powerful when you combine them.
 
 ### Output Redirection
 
@@ -140,6 +155,11 @@ echo "You entered: $MY_VARIABLE"
 
 ## Data Manipulation
 
+> **What is Data Manipulation?**
+> Linux gives you a powerful set of small tools designed to slice, sort, filter, and transform text. Since almost everything in Linux is text — logs, configs, command output — knowing how to manipulate text means you can answer almost any question about your system. These tools are designed to be chained together with pipes, so you can build complex data processing pipelines out of simple building blocks.
+>
+> For example, you might pipe a log file through `grep` to find errors, then through `cut` to extract just the timestamps, then through `sort` and `uniq` to count how many unique error times there are — all in a single command.
+
 | Command | Purpose |
 |---------|---------|
 | `awk` | Complex text processing |
@@ -173,6 +193,11 @@ echo PWM.COLLAGE | tr MA NE  # → PWN.COLLEGE
 
 ## Processes & Jobs
 
+> **What are Processes & Jobs?**
+> A process is any program that is currently running on your system. Every time you run a command, Linux creates a new process for it and assigns it a unique ID called a PID (Process ID). Your system is always running hundreds of processes at once — from your terminal to background system services.
+>
+> A job is a process that was started from your current shell session. Linux lets you manage jobs directly — you can pause them, send them to run in the background so you get your terminal back, or bring them back to the foreground. This is especially useful when you're running something slow and want to keep working at the same time.
+
 ### Listing Processes
 
 ```bash
@@ -194,6 +219,11 @@ ps aux        # BSD syntax: all processes, user-readable
 ---
 
 ## Users
+
+> **What are Users?**
+> Linux is a multi-user operating system — it was designed from the ground up to have many people using the same system at the same time, each with their own files and permissions. Every action on the system is tied to a user account. This is what allows Linux to keep one user's files private from another, and to prevent regular users from accidentally (or intentionally) breaking system-wide settings.
+>
+> Not all users are human. Many services like web servers or databases run as their own dedicated user accounts with limited permissions — this way, even if a service is compromised, the attacker can't access the rest of the system. You can see all user accounts on the system in the `/etc/passwd` file.
 
 - Linux has many users — some are real accounts, others are **service accounts** that support installed software.
 - Passwords used to live in `/etc/passwd` (world-readable ⚠️) but are now stored as **hashes** in `/etc/shadow`.
@@ -223,6 +253,11 @@ Unlike `su`, `sudo` checks `/etc/sudoers` to determine authorization — no root
 ---
 
 ## Permissions
+
+> **What are Permissions?**
+> Linux uses a permission system to control who can read, write, or execute any given file. Every file has an owner (a user) and a group, and permissions are set separately for three audiences: the owner, the group, and everyone else. This is what stops one user from reading another user's private files, and what prevents regular users from modifying system files.
+>
+> Permissions are shown as a 9-character string like `rwxr-xr--`. Each group of three characters represents read (`r`), write (`w`), and execute (`x`) access for the owner, group, and others respectively. A `-` means that permission is not granted.
 
 ### Reading Permission Strings
 
@@ -281,6 +316,11 @@ echo $?   # 0 = success, non-zero = error
 
 ## Chaining Commands
 
+> **What is Chaining Commands?**
+> In Linux, you can run multiple commands in sequence on a single line by chaining them together. The real power comes from *conditional* chaining — you can tell Linux to only run the next command if the previous one succeeded, or only if it failed. This lets you write simple but robust one-liners that handle success and failure gracefully.
+>
+> Commands communicate success or failure through an *exit code*. A zero exit code means success; anything else means failure. The chaining operators (`&&`, `||`, `;`) use this exit code to decide whether to run the next command. Shell scripts are built almost entirely on this idea.
+
 | Operator | Behavior |
 |----------|----------|
 | `;` | Run both commands regardless of exit codes |
@@ -306,6 +346,11 @@ When you run `./script.sh`, Linux reads the first line, extracts the interpreter
 ---
 
 ## Terminal Multiplexing
+
+> **What is Terminal Multiplexing?**
+> A terminal multiplexer lets you run multiple terminal sessions inside a single window. You can split your screen into panes, switch between separate windows, and — most importantly — *detach* from a session and leave it running in the background. If your SSH connection drops, your work keeps going and you can reattach to it later, right where you left off.
+>
+> Think of it like virtual desktops but for your terminal. Instead of opening ten separate terminal windows, a multiplexer lets you manage everything from one place. The two most popular options are `screen` (older, simpler) and `tmux` (modern, more features).
 
 ### screen
 
@@ -339,7 +384,10 @@ tmux attach      # Reattach to last session
 
 ## PATH
 
-The `PATH` variable tells your shell where to look for executables.
+> **What is PATH?**
+> When you type a command like `ls` or `python3`, your shell doesn't search your entire hard drive for it — that would be way too slow. Instead, it only looks in a specific list of directories defined in an environment variable called `PATH`. The shell checks each directory in the list, in order, until it finds an executable with that name.
+>
+> This is why you can run `python3` from anywhere without typing `/usr/bin/python3` every time. You can add your own directories to `PATH` so your custom scripts are just as easy to run as any built-in command.
 
 ```bash
 PATH=/home/hacker/scripts    # Override PATH
@@ -351,6 +399,11 @@ echo $PATH                   # View current PATH
 ---
 
 ## Tricks & Shenanigans
+
+> **What are these Tricks?**
+> Linux has a handful of powerful but easy-to-overlook features that experienced users rely on every day. These aren't obscure hacks — they're built into the shell and designed to save you time. From startup scripts that automatically configure your environment to security gotchas that can catch you off guard, knowing these tricks separates a beginner from someone who's truly comfortable with the command line.
+>
+> The `.bashrc` file in particular is worth getting to know. It runs every time you open a new terminal, making it the perfect place to set up aliases, customize your prompt, and configure your environment exactly how you like it.
 
 ### .bashrc Backdoor / Customization
 
