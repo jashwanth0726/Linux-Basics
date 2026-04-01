@@ -1,4 +1,4 @@
-# 🐧 Linux Basics — Personal Notes
+# 🐧 Linux Basics —  Notes
 
 A personal reference guide documenting core Linux concepts, commands, and tricks. Built while learning through hands-on practice.
 
